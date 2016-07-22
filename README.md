@@ -1,7 +1,7 @@
 # NGINX Host Hugo Unit [![Docker Pulls](https://img.shields.io/docker/pulls/handcraftedbits/nginx-unit-hugo.svg?maxAge=2592000)](https://hub.docker.com/r/handcraftedbits/nginx-unit-hugo)
 
 A [Docker](https://www.docker.com) container that provides a [Hugo](https://gohugo.io) unit for
-[NGINX Host](https://github.com/handcraftedbits/docker-nginx-host).  This unit does **only** supports Hugo sites that
+[NGINX Host](https://github.com/handcraftedbits/docker-nginx-host).  This unit **only** supports Hugo sites that
 are available via a remote source control repository.
 
 # Features
