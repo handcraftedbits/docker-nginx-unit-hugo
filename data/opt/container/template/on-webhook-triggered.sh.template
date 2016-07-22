@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# Do the pull, Hugo build, and optional post-build script in a copy of the repository.  Then, swap the repository
+# directories so we have an instant update of the site.
+
+cd /var/www/${repo_dir}.last
+
+git pull
+/opt/hugo/hugo --theme=${HUGO_THEME}
+
+post_build_script=/opt/container/script/post-hugo-build.sh
+
+if [ -f ${post_build_script} ]
+then
+     chmod +x ${post_build_script}
+     
+     ${post_build_script}
+fi
+
+cd ..
+mv ${repo_dir} ${repo_dir}.tmp
+mv ${repo_dir}.last ${repo_dir}
+mv ${repo_dir}.tmp ${repo_dir}.last

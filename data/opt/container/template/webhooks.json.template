@@ -1,0 +1,16 @@
+[
+  {
+    "id": "rebuild",
+    "execute-command": "/opt/container/script/on-webhook-triggered.sh",
+    "trigger-rule": {
+      "match": {
+        "type": "payload-hash-sha1",
+        "secret": "${HUGO_GITHUB_SECRET}",
+        "parameter": {
+          "source": "header",
+          "name": "X-Hub-Signature"
+        }
+      }
+    }
+  }
+]

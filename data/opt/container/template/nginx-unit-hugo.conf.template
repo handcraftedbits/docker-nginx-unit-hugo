@@ -1,0 +1,7 @@
+#rewrite ^(${prefix_no_trailing_slash})$ $1/ permanent;
+
+location ${normalized_prefix} {
+     #include ${unit_conf}.extra;
+
+     alias ${repo_dir}/public/;
+}
