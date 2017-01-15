@@ -120,18 +120,18 @@ You can run a post-build script (for example, to minimize HTML after Hugo genera
 the `/opt/container/script/post-hugo-build.sh` volume, for example:
 
 ```yaml
-  hugo:
-    image: handcraftedbits/nginx-unit-hugo
-    environment:
-      - NGINX_UNIT_HOSTS=mysite.com
-      - NGINX_URL_PREFIX=/blog
-      - HUGO_GITHUB_SECRET=password
-      - HUGO_REPO_URL=https://github.com/mysite/blog.git
-      - HUGO_THEME=my_hugo_theme
-    volumes:
-      - /home/me/my-post-build-script.sh:/opt/container/script/post-hugo-build.sh
-    volumes_from:
-      - data
+hugo:
+  image: handcraftedbits/nginx-unit-hugo
+  environment:
+    - NGINX_UNIT_HOSTS=mysite.com
+    - NGINX_URL_PREFIX=/blog
+    - HUGO_GITHUB_SECRET=password
+    - HUGO_REPO_URL=https://github.com/mysite/blog.git
+    - HUGO_THEME=my_hugo_theme
+  volumes:
+    - /home/me/my-post-build-script.sh:/opt/container/script/post-hugo-build.sh
+  volumes_from:
+    - data
 ```
 
 ## Running the NGINX Host Hugo Unit
