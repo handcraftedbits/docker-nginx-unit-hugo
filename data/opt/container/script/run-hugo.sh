@@ -60,7 +60,7 @@ fi
 
 logInfo "using URL prefix '${NGINX_URL_PREFIX}' for Hugo webhooks"
 
-webhook_config=/etc/webhooks/webhooks.json
+webhook_config=/opt/container/webhooks.json
 webhook_script=/opt/container/script/on-webhook-triggered.sh
 
 mkdir -p /etc/webhooks
