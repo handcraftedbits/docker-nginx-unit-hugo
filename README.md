@@ -29,7 +29,6 @@ hugo:
     - NGINX_URL_PREFIX=/blog
     - HUGO_GITHUB_SECRET=password
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
-    - HUGO_REPO_BRANCH=master
     - HUGO_THEME=my_hugo_theme
   volumes_from:
     - data
@@ -59,7 +58,6 @@ services:
       - NGINX_URL_PREFIX=/blog
       - HUGO_GITHUB_SECRET=password
       - HUGO_REPO_URL=https://github.com/mysite/blog.git
-      - HUGO_REPO_BRANCH=master
       - HUGO_THEME=my_hugo_theme
     volumes_from:
       - data
@@ -125,17 +123,17 @@ The secret value used when setting up the Hugo site rebuild webhook on GitHub.
 
 **Required**
 
-### `HUGO_REPO_URL`
-
-The URL of the Git repository hosting your Hugo site.
-
-**Required**
-
 ### `HUGO_REPO_BRANCH`
 
 The branch of the Git repository hosting your Hugo site.
 
 **Default value**: `master`
+
+### `HUGO_REPO_URL`
+
+The URL of the Git repository hosting your Hugo site.
+
+**Required**
 
 ### `HUGO_THEME`
 
