@@ -6,7 +6,7 @@ are available via a remote source control repository.
 
 # Features
 
-* Hugo v0.18
+* Hugo v0.18.1
 * Can automatically regenerate your Hugo site upon a push to your [GitHub](https://github.com) repository
 
 # Usage
@@ -41,8 +41,8 @@ Observe the following:
 * As with any other NGINX Host unit, we mount the volumes from our
   [NGINX Host data container](https://github.com/handcraftedbits/docker-nginx-host-data), in this case named `data`.
 
-Finally, we need to create a link in our NGINX Host container to the `redirector` container in order to host
-go-import-redirector.  Here is our final `docker-compose.yml` file:
+Finally, we need to create a link in our NGINX Host container to the `hugo` container in order to host Hugo.  Here is
+our final `docker-compose.yml` file:
 
 ```yaml
 version: '2'
@@ -65,7 +65,7 @@ services:
   proxy:
     image: handcraftedbits/nginx-host
     links:
-      - redirector
+      - hugo
     ports:
       - "443:443"
     volumes:
@@ -107,7 +107,7 @@ For example, if the blog is hosted at `https://mysite.com/`, then the webhook UR
 You will also need to set the environment variable `HUGO_GITHUB_SECRET` to the secret value specified during
 configuration of the webhook in GitHub.
 
-## Running the NGINX Host go-import-redirector Unit
+## Running the NGINX Host Hugo Unit
 
 Assuming you are using Docker Compose, simply run `docker-compose up` in the same directory as your
 `docker-compose.yml` file.  Otherwise, you will need to start each container with `docker run` or a suitable
