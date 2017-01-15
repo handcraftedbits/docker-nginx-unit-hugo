@@ -11,6 +11,13 @@ are available via a remote source control repository.
 
 # Usage
 
+## Prerequisites
+
+### `NGINX_UNIT_HOSTS` Considerations
+
+It is important that the value of your `NGINX_UNIT_HOSTS` environment variable is set to a single value and doesn't
+include wildcards or regular expressions as this value will be used by Hugo to determine the base URL of your site.
+
 ## Configuration
 
 It is highly recommended that you use container orchestration software such as
@@ -107,6 +114,26 @@ For example, if the blog is hosted at `https://mysite.com/`, then the webhook UR
 You will also need to set the environment variable `HUGO_GITHUB_SECRET` to the secret value specified during
 configuration of the webhook in GitHub.
 
+### Post-build Script
+
+You can run a post-build script (for example, to minimize HTML after Hugo generates your site) by attaching a file to
+the `/opt/container/script/post-hugo-build.sh` volume, for example:
+
+```yaml
+  hugo:
+    image: handcraftedbits/nginx-unit-hugo
+    environment:
+      - NGINX_UNIT_HOSTS=mysite.com
+      - NGINX_URL_PREFIX=/blog
+      - HUGO_GITHUB_SECRET=password
+      - HUGO_REPO_URL=https://github.com/mysite/blog.git
+      - HUGO_THEME=my_hugo_theme
+    volumes:
+      - /home/me/my-post-build-script.sh:/opt/container/script/post-hugo-build.sh
+    volumes_from:
+      - data
+```
+
 ## Running the NGINX Host Hugo Unit
 
 Assuming you are using Docker Compose, simply run `docker-compose up` in the same directory as your
@@ -137,11 +164,12 @@ The URL of the Git repository hosting your Hugo site.
 
 ### `HUGO_THEME`
 
-The name of the theme used to render your Huge site.
+The name of the theme used to render your Hugo site.
 
 **Required**
 
 ### Others
 
-Please see the NGINX Host [documentation](https://github.com/handcraftedbits/docker-nginx-host#units) for information
-on additional environment variables understood by this unit.
+Please see the NGINX Host [documentation](https://github.com/handcraftedbits/docker-nginx-host#units) and 
+[docker-nginx-unit-webhook documentation](https://github.com/handcraftedbits/docker-nginx-unit-webhook#environment-variables)
+for information on additional environment variables understood by this unit.

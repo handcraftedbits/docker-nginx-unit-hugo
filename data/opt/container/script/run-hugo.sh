@@ -36,7 +36,7 @@ fi
 
 git clone --recursive -b ${HUGO_REPO_BRANCH:-master} ${HUGO_REPO_URL} ${repo_dir}
 
-/opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME}
+/opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME} --baseURL=https://${NGINX_UNIT_HOSTS}${normalized_prefix}
 
 if [ -f ${post_build_script} ]
 then
@@ -63,13 +63,13 @@ logInfo "using URL prefix '${NGINX_URL_PREFIX}' for Hugo webhooks"
 webhook_config=/opt/container/webhooks.json
 webhook_script=/opt/container/script/on-webhook-triggered.sh
 
-mkdir -p /etc/webhooks
 cp /opt/container/template/webhooks.json.template ${webhook_config}
 cp /opt/container/template/on-webhook-triggered.sh.template ${webhook_script}
 chmod +x ${webhook_script}
 
 fileSubstitute ${webhook_config} HUGO_GITHUB_SECRET ${HUGO_GITHUB_SECRET}
 fileSubstitute ${webhook_script} HUGO_THEME ${HUGO_THEME}
+fileSubstitute ${webhook_script} HUGO_BASE_URL https://${NGINX_UNIT_HOSTS}${normalized_prefix}
 fileSubstitute ${webhook_script} repo_dir `basename ${repo_dir}`
 
 notifyUnitStarted

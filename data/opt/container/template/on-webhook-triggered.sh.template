@@ -6,7 +6,7 @@
 cd /var/www/${repo_dir}.last
 
 git pull
-/opt/hugo/hugo --theme=${HUGO_THEME}
+/opt/hugo/hugo --theme=${HUGO_THEME} --baseURL=${HUGO_BASE_URL}
 
 post_build_script=/opt/container/script/post-hugo-build.sh
 
