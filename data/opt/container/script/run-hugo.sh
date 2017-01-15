@@ -34,7 +34,7 @@ fi
 
 # Do the initial clone and build of the Hugo site.
 
-git clone --recursive ${HUGO_REPO_URL} ${repo_dir}
+git clone --recursive -b ${HUGO_REPO_BRANCH:-master} ${HUGO_REPO_URL} ${repo_dir}
 
 /opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME}
 
