@@ -15,8 +15,9 @@ are available via a remote source control repository.
 
 ### `NGINX_UNIT_HOSTS` Considerations
 
-It is important that the value of your `NGINX_UNIT_HOSTS` environment variable is set to a single value and doesn't
-include wildcards or regular expressions as this value will be used by Hugo to determine the base URL of your site.
+It is important that the value of your `NGINX_UNIT_HOSTS` environment variable doesn't include wildcards or regular
+expressions as this value will be used by Hugo to determine the base URL of your site.  Also, if the variable contains
+multiple hosts (e.g., `myhost.com,otherhost.com`), only the first host (the one before the `,`) will be used.
 
 ## Configuration
 

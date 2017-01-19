@@ -15,6 +15,7 @@ filename=`copyUnitConf nginx-unit-hugo`
 normalized_prefix=`normalizeSlashes "/${NGINX_URL_PREFIX}/"`
 post_build_script=/opt/container/script/post-hugo-build.sh
 repo_dir=/var/www/hugo-`randomInt`
+base_url=`echo ${NGINX_UNIT_HOSTS} | cut -d"," -f1`
 
 fileSubstitute ${filename} normalized_prefix $normalized_prefix
 fileSubstitute ${filename} repo_dir ${repo_dir}
@@ -36,7 +37,7 @@ fi
 
 git clone --recursive -b ${HUGO_REPO_BRANCH:-master} ${HUGO_REPO_URL} ${repo_dir}
 
-/opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME} --baseURL=https://${NGINX_UNIT_HOSTS}${normalized_prefix}
+/opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME} --baseURL=https://${base_url}${normalized_prefix}
 
 if [ -f ${post_build_script} ]
 then
