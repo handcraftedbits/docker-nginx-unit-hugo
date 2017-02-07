@@ -96,7 +96,7 @@ approach, if the theme is available in its own Git repository, is to use a
 [Git submodule](https://git-scm.com/docs/git-submodule), for example:
 
 ```sh
-git submodule add user@myrepo.com:my_theme my_theme
+git submodule add user@myrepo.com:my_theme themes/my_theme
 ```
 
 ### Enabling Site Regeneration After GitHub Push
@@ -114,6 +114,26 @@ For example, if the blog is hosted at `https://mysite.com/`, then the webhook UR
 
 You will also need to set the environment variable `HUGO_GITHUB_SECRET` to the secret value specified during
 configuration of the webhook in GitHub.
+
+### Pre-build Script
+
+You can run a pre-build script (for example, to copy resources before Hugo generates your site) by attaching a file to
+the `/opt/container/script/pre-hugo-build.sh` volume, for example:
+
+```yaml
+hugo:
+  image: handcraftedbits/nginx-unit-hugo
+  environment:
+    - NGINX_UNIT_HOSTS=mysite.com
+    - NGINX_URL_PREFIX=/blog
+    - HUGO_GITHUB_SECRET=password
+    - HUGO_REPO_URL=https://github.com/mysite/blog.git
+    - HUGO_THEME=my_hugo_theme
+  volumes:
+    - /home/me/my-pre-build-script.sh:/opt/container/script/pre-hugo-build.sh
+  volumes_from:
+    - data
+```
 
 ### Post-build Script
 
