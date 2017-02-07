@@ -42,7 +42,7 @@ if [ -f ${pre_build_script} ]
 then
      chmod +x ${pre_build_script}
      
-     ${pre_build_script}
+     ${pre_build_script} ${repo_dir}
 fi
 
 /opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME} --baseURL=https://${base_url}${normalized_prefix}
@@ -51,7 +51,7 @@ if [ -f ${post_build_script} ]
 then
      chmod +x ${post_build_script}
      
-     ${post_build_script}
+     ${post_build_script} ${repo_dir}
 fi
 
 cp -R ${repo_dir} ${repo_dir}.last

@@ -3,10 +3,11 @@
 # Do the pull, optional pre-build script, Hugo build, and optional post-build script in a copy of the repository.  Then,
 # swap the repository directories so we have an instant update of the site.
 
+content_dir=/var/www/${repo_dir}.last
 post_build_script=/opt/container/script/post-hugo-build.sh
 pre_build_script=/opt/container/script/pre-hugo-build.sh
 
-cd /var/www/${repo_dir}.last
+cd ${content_dir}
 
 git pull
 
@@ -14,7 +15,7 @@ if [ -f ${pre_build_script} ]
 then
      chmod +x ${pre_build_script}
      
-     ${pre_build_script}
+     ${pre_build_script} ${content_dir}
 fi
 
 /opt/hugo/hugo --theme=${HUGO_THEME} --baseURL=${HUGO_BASE_URL}
@@ -23,7 +24,7 @@ if [ -f ${post_build_script} ]
 then
      chmod +x ${post_build_script}
      
-     ${post_build_script}
+     ${post_build_script} ${content_dir}
 fi
 
 cd ..

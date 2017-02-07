@@ -135,6 +135,8 @@ hugo:
     - data
 ```
 
+The directory where your Hugo repository has been cloned will be provided to this script as the first argument.
+
 ### Post-build Script
 
 You can run a post-build script (for example, to minimize HTML after Hugo generates your site) by attaching a file to
@@ -154,6 +156,8 @@ hugo:
   volumes_from:
     - data
 ```
+
+The directory where your Hugo repository has been cloned will be provided to this script as the first argument.
 
 ## Running the NGINX Host Hugo Unit
 
