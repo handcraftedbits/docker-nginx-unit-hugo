@@ -9,8 +9,6 @@ checkCommonRequiredVariables
 requiredVariable HUGO_REPO_URL
 requiredVariable HUGO_THEME
 
-notifyUnitLaunched
-
 filename=`copyUnitConf nginx-unit-hugo`
 normalized_prefix=`normalizeSlashes "/${NGINX_URL_PREFIX}/"`
 post_build_script=/opt/container/script/post-hugo-build.sh
@@ -81,8 +79,6 @@ fileSubstitute ${webhook_script} HUGO_THEME ${HUGO_THEME}
 fileSubstitute ${webhook_script} HUGO_BASE_URL https://${NGINX_UNIT_HOSTS}${normalized_prefix}
 fileSubstitute ${webhook_script} repo_dir `basename ${repo_dir}`
 
-notifyUnitStarted
-
 # Start webhooks.
 
-/bin/bash /opt/container/script/run-webhook.sh
+exec /bin/bash /opt/container/script/run-webhook.sh

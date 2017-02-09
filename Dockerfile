@@ -1,4 +1,4 @@
-FROM handcraftedbits/nginx-unit-webhook:2.6.0-1
+FROM handcraftedbits/nginx-unit-webhook:2.6.0-2
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
 ARG HUGO_VERSION=v0.18.1
@@ -24,4 +24,4 @@ RUN apk update && \
 
   apk del go libc-dev make
 
-CMD ["/bin/bash", "/opt/container/script/run-hugo.sh"]
+CMD [ "/bin/bash", "/opt/container/script/run-hugo.sh" ]

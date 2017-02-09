@@ -53,7 +53,7 @@ Finally, we need to create a link in our NGINX Host container to the `hugo` cont
 our final `docker-compose.yml` file:
 
 ```yaml
-version: '2'
+version: "3"
 
 services:
   data:
@@ -72,8 +72,9 @@ services:
 
   proxy:
     image: handcraftedbits/nginx-host
-    links:
-      - hugo
+    depends_on:
+      hugo:
+        condition: service_healthy
     ports:
       - "443:443"
     volumes:
@@ -95,7 +96,7 @@ The easiest way to store your themes alongside your content is to simply copy th
 approach, if the theme is available in its own Git repository, is to use a
 [Git submodule](https://git-scm.com/docs/git-submodule), for example:
 
-```sh
+```bash
 git submodule add user@myrepo.com:my_theme themes/my_theme
 ```
 
