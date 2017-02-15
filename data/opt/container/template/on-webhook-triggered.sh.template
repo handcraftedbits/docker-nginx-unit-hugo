@@ -3,7 +3,7 @@
 # Do the pull, optional pre-build script, Hugo build, and optional post-build script in a copy of the repository.  Then,
 # swap the repository directories so we have an instant update of the site.
 
-content_dir=/var/www/${repo_dir}.last
+content_dir=/opt/container/shared/var/www/${repo_dir}.last
 post_build_script=/opt/container/script/post-hugo-build.sh
 pre_build_script=/opt/container/script/pre-hugo-build.sh
 

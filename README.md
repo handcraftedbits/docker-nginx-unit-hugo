@@ -38,27 +38,26 @@ hugo:
     - HUGO_GITHUB_SECRET=password
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
     - HUGO_THEME=my_hugo_theme
-  volumes_from:
-    - data
+  volumes:
+    - data:/opt/container/shared
 ```
 
 Observe the following:
 
 * Several environment variables are used to configure Hugo.  See the
   [environment variable reference](#reference) for additional information.
-* As with any other NGINX Host unit, we mount the volumes from our
-  [NGINX Host data container](https://github.com/handcraftedbits/docker-nginx-host-data), in this case named `data`.
+* As with any other NGINX Host unit, we mount our data volume, in this case named `data`, to `/opt/container/shared`.
 
 Finally, we need to create a link in our NGINX Host container to the `hugo` container in order to host Hugo.  Here is
 our final `docker-compose.yml` file:
 
 ```yaml
-version: "3"
+version: "2.1"
+
+volumes:
+  data:
 
 services:
-  data:
-    image: handcraftedbits/nginx-host-data
-
   hugo:
     image: handcraftedbits/nginx-unit-hugo
     environment:
@@ -67,21 +66,19 @@ services:
       - HUGO_GITHUB_SECRET=password
       - HUGO_REPO_URL=https://github.com/mysite/blog.git
       - HUGO_THEME=my_hugo_theme
-    volumes_from:
-      - data
+    volumes:
+      - data:/opt/container/shared
 
   proxy:
     image: handcraftedbits/nginx-host
-    depends_on:
-      hugo:
-        condition: service_healthy
+    links:
+      - hugo
     ports:
       - "443:443"
     volumes:
+      - data:/opt/container/shared
       - /etc/letsencrypt:/etc/letsencrypt
       - /home/me/dhparam.pem:/etc/ssl/dhparam.pem
-    volumes_from:
-      - data
 ```
 
 This will result in making Hugo available at `https://mysite.com/blog`.
@@ -131,9 +128,8 @@ hugo:
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
     - HUGO_THEME=my_hugo_theme
   volumes:
+    - data:/opt/container/shared
     - /home/me/my-pre-build-script.sh:/opt/container/script/pre-hugo-build.sh
-  volumes_from:
-    - data
 ```
 
 The directory where your Hugo repository has been cloned will be provided to this script as the first argument.
@@ -153,9 +149,8 @@ hugo:
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
     - HUGO_THEME=my_hugo_theme
   volumes:
+    - data:/opt/container/shared
     - /home/me/my-post-build-script.sh:/opt/container/script/post-hugo-build.sh
-  volumes_from:
-    - data
 ```
 
 The directory where your Hugo repository has been cloned will be provided to this script as the first argument.
