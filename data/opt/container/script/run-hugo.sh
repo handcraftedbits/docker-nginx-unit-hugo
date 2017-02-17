@@ -2,13 +2,6 @@
 
 . /opt/container/script/unit-utils.sh
 
-function onHugoUnitStopped () {
-     onProcessStopped ${1} ${2}
-
-     rm -f ${unitConfHugo}
-     rm -rf ${repo_dir} ${repo_dir}.last
-}
-
 # Check required environment variables and fix the NGINX unit configuration.
 
 checkCommonRequiredVariables
@@ -18,15 +11,15 @@ requiredVariable HUGO_THEME
 
 notifyUnitLaunched
 
-unitConf=`copyUnitConf nginx-unit-hugo`
+unit_conf=`copyUnitConf nginx-unit-hugo`
 normalized_prefix=`normalizeSlashes "/${NGINX_URL_PREFIX}/"`
 post_build_script=/opt/container/script/post-hugo-build.sh
 pre_build_script=/opt/container/script/pre-hugo-build.sh
 repo_dir=/opt/container/shared/var/www/hugo-`hostname`
 base_url=`echo ${NGINX_UNIT_HOSTS} | cut -d"," -f1`
 
-fileSubstitute ${unitConf} normalized_prefix $normalized_prefix
-fileSubstitute ${unitConf} repo_dir ${repo_dir}
+fileSubstitute ${unit_conf} normalized_prefix $normalized_prefix
+fileSubstitute ${unit_conf} repo_dir ${repo_dir}
 
 logUrlPrefix "hugo"
 
@@ -34,11 +27,11 @@ logUrlPrefix "hugo"
 
 if [ "${normalized_prefix}" == "/" ]
 then
-     sed -i "s/#rewrite.*//g" ${unitConf}
+     sed -i "s/#rewrite.*//g" ${unit_conf}
 else
-     sed -i "s/#rewrite/rewrite/g" ${unitConf}
+     sed -i "s/#rewrite/rewrite/g" ${unit_conf}
 
-     fileSubstitute ${unitConf} prefix_no_trailing_slash `echo $normalized_prefix | sed "s%/$%%g"`
+     fileSubstitute ${unit_conf} prefix_no_trailing_slash `echo $normalized_prefix | sed "s%/$%%g"`
 fi
 
 # Do the initial clone and build of the Hugo site.
@@ -90,8 +83,4 @@ fileSubstitute ${webhook_script} repo_dir `basename ${repo_dir}`
 
 # Start webhooks.
 
-export -f onHugoUnitStopped
-export repo_dir=${repo_dir}
-export unitConfHugo=${unitConf}
-
-exec env UNIT_TRAP_FUNCTION=onHugoUnitStopped /bin/bash /opt/container/script/run-webhook.sh
+exec /bin/bash /opt/container/script/run-webhook.sh

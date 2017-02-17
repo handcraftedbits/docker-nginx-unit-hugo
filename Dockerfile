@@ -1,4 +1,4 @@
-FROM handcraftedbits/nginx-unit-webhook:2.6.2
+FROM handcraftedbits/nginx-unit-webhook:2.6.2-1
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
 ARG HUGO_VERSION=v0.18.1
