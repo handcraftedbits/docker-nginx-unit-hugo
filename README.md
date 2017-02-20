@@ -7,7 +7,8 @@ are available via a remote source control repository.
 # Features
 
 * Hugo v0.18.1
-* Can automatically regenerate your Hugo site upon a push to your [GitHub](https://github.com) repository
+* Can automatically regenerate your Hugo site upon a push to your [GitHub](https://github.com) or
+  [GitLab](https://gitlab.com) repository
 
 # Usage
 
@@ -35,8 +36,8 @@ hugo:
   environment:
     - NGINX_UNIT_HOSTS=mysite.com
     - NGINX_URL_PREFIX=/blog
-    - HUGO_GITHUB_SECRET=password
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
+    - HUGO_REPO_SECRET=password
     - HUGO_THEME=my_hugo_theme
   volumes:
     - data:/opt/container/shared
@@ -63,8 +64,8 @@ services:
     environment:
       - NGINX_UNIT_HOSTS=mysite.com
       - NGINX_URL_PREFIX=/blog
-      - HUGO_GITHUB_SECRET=password
       - HUGO_REPO_URL=https://github.com/mysite/blog.git
+      - HUGO_REPO_SECRET=password
       - HUGO_THEME=my_hugo_theme
     volumes:
       - data:/opt/container/shared
@@ -97,10 +98,11 @@ approach, if the theme is available in its own Git repository, is to use a
 git submodule add user@myrepo.com:my_theme themes/my_theme
 ```
 
-### Enabling Site Regeneration After GitHub Push
+### Enabling Site Regeneration After Git Repository Push
 
-If your content repository is stored in GitHub, your Hugo site can be automatically regenerated after a push.  Simply
-[create a GitHub webhook](https://developer.github.com/webhooks/creating/) for your repository with the URL
+If your content repository is stored in GitHub or GitLab, your Hugo site can be automatically regenerated after a push.
+Simply [create a GitHub webhook](https://developer.github.com/webhooks/creating/) or a
+[GitLab webhook](https://docs.gitlab.com/ce/user/project/integrations/webhooks.html) for your repository with the URL
 
 `https://<host>/<prefix>/rebuild`
 
@@ -110,8 +112,8 @@ For example, if the blog is hosted at `https://mysite.com/`, then the webhook UR
 `https://mysite.com/webhooks-hugo/rebuild`; if the blog is hosted at `https://mysite.com/blog` (i.e.,
 `NGINX_URL_PREFIX` is set to `/blog`), the webhook URL will be `https://mysite.com/webhooks-blog/rebuild`.
 
-You will also need to set the environment variable `HUGO_GITHUB_SECRET` to the secret value specified during
-configuration of the webhook in GitHub.
+You will also need to set the environment variable `HUGO_REPO_SECRET` to the secret value specified during
+configuration of the webhook in GitHub or GitLab.
 
 ### Pre-build Script
 
@@ -124,8 +126,8 @@ hugo:
   environment:
     - NGINX_UNIT_HOSTS=mysite.com
     - NGINX_URL_PREFIX=/blog
-    - HUGO_GITHUB_SECRET=password
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
+    - HUGO_REPO_SECRET=password
     - HUGO_THEME=my_hugo_theme
   volumes:
     - data:/opt/container/shared
@@ -145,8 +147,8 @@ hugo:
   environment:
     - NGINX_UNIT_HOSTS=mysite.com
     - NGINX_URL_PREFIX=/blog
-    - HUGO_GITHUB_SECRET=password
     - HUGO_REPO_URL=https://github.com/mysite/blog.git
+    - HUGO_REPO_SECRET=password
     - HUGO_THEME=my_hugo_theme
   volumes:
     - data:/opt/container/shared
@@ -165,23 +167,23 @@ alternative, making sure to add the appropriate environment variables and volume
 
 ## Environment Variables
 
-### `HUGO_GITHUB_SECRET`
-
-The secret value used when setting up the Hugo site rebuild webhook on GitHub.
-
-**Required**
-
 ### `HUGO_REPO_BRANCH`
 
 The branch of the Git repository hosting your Hugo site.
 
 **Default value**: `master`
 
+### `HUGO_REPO_SECRET`
+
+The secret value used when setting up the Hugo site rebuild webhook on GitHub or GitLab.
+
+**Required**
+
 ### `HUGO_REPO_URL`
 
 The URL of the Git repository hosting your Hugo site.
 
-**Required**
+**Required** if your Git repository is hosted on GitHub or GitLab.
 
 ### `HUGO_THEME`
 

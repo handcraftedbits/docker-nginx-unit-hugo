@@ -72,15 +72,38 @@ logInfo "using URL prefix '${NGINX_URL_PREFIX}' for Hugo webhooks"
 webhook_config=/opt/container/webhooks.json
 webhook_script=/opt/container/script/on-webhook-triggered.sh
 
-cp /opt/container/template/webhooks.json.template ${webhook_config}
-cp /opt/container/template/on-webhook-triggered.sh.template ${webhook_script}
-chmod +x ${webhook_script}
+# Figure out which Git host we're using based on the hostname.
 
-fileSubstitute ${webhook_config} HUGO_GITHUB_SECRET ${HUGO_GITHUB_SECRET}
-fileSubstitute ${webhook_script} HUGO_THEME ${HUGO_THEME}
-fileSubstitute ${webhook_script} HUGO_BASE_URL https://${NGINX_UNIT_HOSTS}${normalized_prefix}
-fileSubstitute ${webhook_script} repo_dir `basename ${repo_dir}`
+repo_type=`echo ${HUGO_REPO_URL} | cut -d"/" -f3`
 
-# Start webhooks.
+if [ `echo ${repo_type} | grep -i "github.com"` ]
+then
+     repo_type=github
+elif [ `echo ${repo_type} | grep -i "gitlab.com"` ]
+then
+     repo_type=gitlab
+else
+     logWarning "unable to determine Git repository type for repository URL '${HUGO_REPO_URL}'; automatic update not supported"
 
-exec /bin/bash /opt/container/script/run-webhook.sh
+     repo_type=
+fi
+
+if [ ! -z "${repo_type}" ]
+then
+     cp /opt/container/template/webhooks.${repo_type}.json.template ${webhook_config}
+     cp /opt/container/template/on-webhook-triggered.sh.template ${webhook_script}
+     chmod +x ${webhook_script}
+
+     fileSubstitute ${webhook_config} HUGO_REPO_SECRET ${HUGO_REPO_SECRET}
+     fileSubstitute ${webhook_script} HUGO_THEME ${HUGO_THEME}
+     fileSubstitute ${webhook_script} HUGO_BASE_URL https://${NGINX_UNIT_HOSTS}${normalized_prefix}
+     fileSubstitute ${webhook_script} repo_dir `basename ${repo_dir}`
+
+     # Start webhooks.
+
+     exec /bin/bash /opt/container/script/run-webhook.sh
+else
+     notifyUnitStarted
+
+     exec tail -f /dev/null
+fi

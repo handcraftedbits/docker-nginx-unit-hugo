@@ -5,7 +5,7 @@
     "trigger-rule": {
       "match": {
         "type": "payload-hash-sha1",
-        "secret": "${HUGO_GITHUB_SECRET}",
+        "secret": "${HUGO_REPO_SECRET}",
         "parameter": {
           "source": "header",
           "name": "X-Hub-Signature"

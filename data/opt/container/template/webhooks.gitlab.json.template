@@ -1,0 +1,16 @@
+[
+  {
+    "id": "rebuild",
+    "execute-command": "/opt/container/script/on-webhook-triggered.sh",
+    "trigger-rule": {
+      "match": {
+        "type": "value",
+        "value": "${HUGO_REPO_SECRET}",
+        "parameter": {
+          "source": "header",
+          "name": "X-Gitlab-Token"
+        }
+      }
+    }
+  }
+]
