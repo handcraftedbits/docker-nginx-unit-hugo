@@ -6,7 +6,7 @@ are available via a remote source control repository.
 
 # Features
 
-* Hugo v0.18.1
+* Hugo v0.19
 * Can automatically regenerate your Hugo site upon a push to your [GitHub](https://github.com) or
   [GitLab](https://gitlab.com) repository
 

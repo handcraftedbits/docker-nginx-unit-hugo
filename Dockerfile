@@ -1,7 +1,7 @@
 FROM handcraftedbits/nginx-unit-webhook:2.6.2-1
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
-ARG HUGO_VERSION=v0.18.1
+ARG HUGO_VERSION=v0.19
 
 COPY data /
 
@@ -17,7 +17,7 @@ RUN apk update && \
   export GOPATH=/opt/gopath && \
   export PATH=$PATH:$GOPATH/bin && \
 
-  make govendor gitinfo && \
+  make hugo && \
   mv hugo /opt/hugo/hugo && \
   cd /opt && \
   rm -rf gopath && \
