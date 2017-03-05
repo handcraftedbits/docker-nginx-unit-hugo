@@ -10,6 +10,7 @@ pre_build_script=/opt/container/script/pre-hugo-build.sh
 cd ${content_dir}
 
 git pull
+git submodule update
 
 if [ -f ${pre_build_script} ]
 then
