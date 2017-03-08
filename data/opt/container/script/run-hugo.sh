@@ -18,6 +18,13 @@ pre_build_script=/opt/container/script/pre-hugo-build.sh
 repo_dir=/opt/container/shared/var/www/hugo-`hostname`
 base_url=`echo ${NGINX_UNIT_HOSTS} | cut -d"," -f1`
 
+if [ "${HUGO_IGNORE_CACHE}" == "true" ]
+then
+     ignore_cache="--ignoreCache"
+else
+     ignore_cache=""
+fi
+
 fileSubstitute ${unit_conf} normalized_prefix $normalized_prefix
 fileSubstitute ${unit_conf} repo_dir ${repo_dir}
 
@@ -45,7 +52,7 @@ then
      ${pre_build_script} ${repo_dir}
 fi
 
-/opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME} --baseURL=https://${base_url}${normalized_prefix}
+/opt/hugo/hugo -s ${repo_dir} --theme=${HUGO_THEME} --baseURL=https://${base_url}${normalized_prefix} ${ignore_cache}
 
 if [ -f ${post_build_script} ]
 then

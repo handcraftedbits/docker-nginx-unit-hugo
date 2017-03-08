@@ -167,6 +167,12 @@ alternative, making sure to add the appropriate environment variables and volume
 
 ## Environment Variables
 
+### `HUGO_IGNORE_CACHE`
+
+Used to ignore Hugo's cache directory (i.e., calls Hugo with the `--ignoreCache` parameter) if set to `true`.
+
+**Default value**: `false`
+
 ### `HUGO_REPO_BRANCH`
 
 The branch of the Git repository hosting your Hugo site.
