@@ -6,7 +6,7 @@ are available via a remote source control repository.
 
 # Features
 
-* Hugo v0.19
+* Hugo v0.30.2
 * Can automatically regenerate your Hugo site upon a push to your [GitHub](https://github.com) or
   [GitLab](https://gitlab.com) repository
 
@@ -199,6 +199,6 @@ The name of the theme used to render your Hugo site.
 
 ### Others
 
-Please see the NGINX Host [documentation](https://github.com/handcraftedbits/docker-nginx-host#units) and 
+Please see the NGINX Host [documentation](https://github.com/handcraftedbits/docker-nginx-host#units) and
 [docker-nginx-unit-webhook documentation](https://github.com/handcraftedbits/docker-nginx-unit-webhook#environment-variables)
 for information on additional environment variables understood by this unit.
